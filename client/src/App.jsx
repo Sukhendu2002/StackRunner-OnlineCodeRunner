@@ -20,6 +20,10 @@ function App() {
     fontSize: fontSize,
   };
 
+  const updateCode = (newCode) => {
+    setUserCode(newCode);
+  };
+
   // Function to call the compile endpoint
   async function compile() {
     setLoading(true);
@@ -109,6 +113,7 @@ function App() {
         fontSize={fontSize}
         setFontSize={setFontSize}
         setLangId={setLangId}
+        updateCode={updateCode}
       />
       <div className="main">
         <div className="left-container">
@@ -120,6 +125,7 @@ function App() {
             language={userLang}
             defaultLanguage="python"
             defaultValue="# Enter your code here"
+            value={userCode}
             onChange={(value) => {
               setUserCode(value);
             }}
