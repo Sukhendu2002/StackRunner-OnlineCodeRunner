@@ -12,8 +12,24 @@ const Home = () => {
     });
   };
   return (
-    <div>
-      <h1>Welcome to StackRunner</h1>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        flexDirection: "column",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "3rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+        }}
+      >
+        Welcome to StackRunner
+      </h1>
       <GoogleButton
         onClick={() => {
           handleSignIn();

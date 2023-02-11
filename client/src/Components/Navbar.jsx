@@ -48,19 +48,19 @@ const Navbar = ({
               // setUserCode(e.target.result);
               if (fileExtension === "c" || "cpp" || "py" || "java") {
                 if (fileExtension === "c") {
-                  setLangId(49);
+                  setLangId("c");
                   setUserLang("c");
                   updateCode(e.target.result);
                 } else if (fileExtension === "cpp") {
-                  setLangId(53);
+                  setLangId("cpp");
                   setUserLang("cpp");
                   updateCode(e.target.result);
                 } else if (fileExtension === "py") {
-                  setLangId(71);
+                  setLangId("py");
                   setUserLang("python");
                   updateCode(e.target.result);
                 } else if (fileExtension === "java") {
-                  setLangId(62);
+                  setLangId("java");
                   setUserLang("java");
                   updateCode(e.target.result);
                 }
