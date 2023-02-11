@@ -53,7 +53,7 @@ function Run() {
     };
 
     const res = await Axios.post(
-      "http://ec2-54-144-132-7.compute-1.amazonaws.com:3000/api/v1/code/runCode",
+      `${import.meta.env.VITE_AWS_URL}/api/v1/code/runCode`,
       data
     );
     let jobId = res.data.jobId;
@@ -66,8 +66,7 @@ function Run() {
 
     while (jsonGetSolution.status === "pending") {
       const res = await Axios.get(
-        "http://ec2-54-144-132-7.compute-1.amazonaws.com:3000/api/v1/code/status/" +
-          jobId
+        `${import.meta.env.VITE_AWS_URL}/api/v1/code/status/` + jobId
       );
       jsonGetSolution.status = res.data.job.status;
       if (jsonGetSolution.status === "success") {
