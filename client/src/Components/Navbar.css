@@ -15,7 +15,7 @@
   padding-right: 20px;
   height: 50px;
   text-align: center;
-  color: #e8630a;
+  color: #1f65e6;
   background-color: #474747;
   gap: 20px;
 }
@@ -39,4 +39,12 @@
 .css-yk16xz-control {
   background-color: #474747 !important;
   border-color: #afec3f !important;
+}
+.logout {
+  /* color: #4d4d4d; */
+  height: 36px;
+  width: 80px;
+  font-size: 16px;
+  border: 1px solid #1f65e6;
+  border-radius: 4px;
 }

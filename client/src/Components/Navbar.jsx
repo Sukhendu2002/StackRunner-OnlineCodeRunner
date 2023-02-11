@@ -13,10 +13,10 @@ const Navbar = ({
   updateCode,
 }) => {
   const languages = [
-    { value: "c", label: "C", id: 49 },
-    { value: "cpp", label: "C++", id: 53 },
-    { value: "python", label: "Python", id: 71 },
-    { value: "java", label: "Java", id: 62 },
+    { value: "c", label: "C", language: "c" },
+    { value: "cpp", label: "C++", language: "cpp" },
+    { value: "python", label: "Python", language: "py" },
+    { value: "java", label: "Java", language: "java" },
   ];
   const themes = [
     { value: "vs-dark", label: "Dark" },
@@ -76,9 +76,9 @@ const Navbar = ({
           value={userLang}
           onChange={(e) => {
             setUserLang(e.value);
-            setLangId(e.id);
+            setLangId(e.language);
           }}
-          placeholder={userLang}
+          placeholder={userLang.toUpperCase()}
         />
         <Select
           options={themes}
@@ -97,6 +97,19 @@ const Navbar = ({
             setFontSize(e.target.value);
           }}
         />
+
+        <label>{fontSize}</label>
+
+        {/* logoutbuttoon */}
+        <button
+          className="logout"
+          onClick={() => {
+            localStorage.removeItem("authToken");
+            window.location.reload();
+          }}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
