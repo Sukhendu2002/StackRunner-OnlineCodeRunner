@@ -66,6 +66,10 @@ function Run() {
   // Function to call the compile endpoint
   async function compile() {
     console.log("Compiling...");
+    if (userCode === "") {
+      alert("Please enter some code");
+      return;
+    }
     setLoading(true);
     const data = {
       language: langId,
