@@ -1,20 +1,41 @@
 import { useState, useEffect } from "react";
 import "../App.css";
-import Editor from "@monaco-editor/react";
 import Navbar from "../Components/Navbar";
 import Axios from "axios";
 import logo from "../loading.gif";
+import AceEditor from "react-ace";
+import Loader from "../Components/Loader";
+
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/snippets/java";
+import "ace-builds/src-noconflict/snippets/python";
+import "ace-builds/src-noconflict/snippets/c_cpp";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/theme-kuroir";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-xcode";
+import "ace-builds/src-noconflict/theme-textmate";
+import "ace-builds/src-noconflict/theme-solarized_dark";
+import "ace-builds/src-noconflict/theme-solarized_light";
+import "ace-builds/src-noconflict/theme-terminal";
+import "ace-builds/src-min-noconflict/ext-searchbox";
+import "ace-builds/src-min-noconflict/ext-language_tools";
 
 function Run() {
   // State variable to set users source code
   const [userCode, setUserCode] = useState(``);
   const [userLang, setUserLang] = useState("python");
-  const [userTheme, setUserTheme] = useState("vs-dark");
+  const [userTheme, setUserTheme] = useState("twilight");
   const [fontSize, setFontSize] = useState(20);
   const [userInput, setUserInput] = useState("");
   const [userOutput, setUserOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [langId, setLangId] = useState("py");
+  const [mode, setMode] = useState("python");
 
   const options = {
     fontSize: fontSize,
@@ -50,10 +71,11 @@ function Run() {
       language: langId,
       code: userCode,
       input: userInput,
+      userId: localStorage.getItem("uid") || Date.now().toString(),
     };
 
     const res = await Axios.post(
-      `${import.meta.env.VITE_AWS_URL}/api/v1/code/runCode`,
+      `${import.meta.env.VITE_URL}/api/v1/code/runCode`,
       data
     );
     let jobId = res.data.jobId;
@@ -66,7 +88,7 @@ function Run() {
 
     while (jsonGetSolution.status === "pending") {
       const res = await Axios.get(
-        `${import.meta.env.VITE_AWS_URL}/api/v1/code/status/` + jobId
+        `${import.meta.env.VITE_URL}/api/v1/code/status/` + jobId
       );
       jsonGetSolution.status = res.data.job.status;
       if (jsonGetSolution.status === "success") {
@@ -109,23 +131,58 @@ function Run() {
         setFontSize={setFontSize}
         setLangId={setLangId}
         updateCode={updateCode}
+        mode={mode}
+        setMode={setMode}
       />
       <div className="main">
         <div className="left-container">
-          <Editor
-            options={options}
+          <AceEditor
+            placeholder={
+              userLang === "python"
+                ? "Write your python code here"
+                : userLang === "java"
+                ? "Write your java code here. The class name should be Main"
+                : "Write your C/C++ code here"
+            }
+            className="editorSection"
             height="calc(100vh - 50px)"
             width="100%"
+            mode={mode}
             theme={userTheme}
-            language={userLang}
-            defaultLanguage="python"
-            defaultValue="# Enter your code here"
-            value={userCode}
+            name="blah2"
             onChange={(value) => {
+              console.log(fontSize);
               setUserCode(value);
             }}
+            value={userCode}
+            fontSize={fontSize}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: true,
+              showLineNumbers: true,
+              tabSize: 2,
+            }}
           />
-          <button className="run-btn" onClick={() => compile()}>
+          <button
+            className="run-btn"
+            onClick={() => compile()}
+            style={{
+              backgroundColor: "#4CAF50",
+              border: "none",
+              color: "white",
+              padding: "15px 32px",
+              textAlign: "center",
+              textDecoration: "none",
+              display: "inline-block",
+              fontSize: "16px",
+              margin: "4px 2px",
+              cursor: "pointer",
+            }}
+          >
             Run
           </button>
         </div>
@@ -140,7 +197,7 @@ function Run() {
           <h4>Output:</h4>
           {loading ? (
             <div className="spinner-box">
-              <img src={logo} alt="Loading..." />
+              <Loader />
             </div>
           ) : (
             <div className="output-box">
@@ -150,6 +207,18 @@ function Run() {
                   clearOutput();
                 }}
                 className="clear-btn"
+                style={{
+                  backgroundColor: "#4CAF50",
+                  border: "none",
+                  color: "white",
+                  padding: "15px 32px",
+                  textAlign: "center",
+                  textDecoration: "none",
+                  display: "inline-block",
+                  fontSize: "16px",
+                  margin: "4px 2px",
+                  cursor: "pointer",
+                }}
               >
                 Clear
               </button>
